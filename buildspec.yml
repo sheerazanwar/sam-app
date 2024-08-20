@@ -3,7 +3,6 @@ version: 0.2
 phases:
   install:
     commands:
-      # You don't need to install SAM CLI here
       - echo "Installing dependencies..."
       - npm install  # Install project dependencies
   build:
@@ -12,5 +11,7 @@ phases:
       - sam build  # Build your SAM project
   post_build:
     commands:
+      - echo "Packaging the SAM application..."
+      - sam package --output-template-file packaged.yaml --s3-bucket application-s3-fileupload
       - echo "Deploying the SAM application..."
       - sam deploy --template-file packaged.yaml --stack-name serverless-app --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset
