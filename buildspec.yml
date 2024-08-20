@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - npm install -g aws-sam-cli
+      - sam --version
+  build:
+    commands:
+      - sam build
+  post_build:
+    commands:
+      - sam deploy --template-file packaged.yaml --stack-name serverless-app --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset
+artifacts:
+  files:
+    - template.yaml
