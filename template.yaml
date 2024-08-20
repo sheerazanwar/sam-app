@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  SignupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/signup.handler
+      Runtime: nodejs16.x
+      CodeUri: .
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UsersTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+      Events:
+        SignupApi:
+          Type: Api
+          Properties:
+            Path: /signup
+            Method: POST
+
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/login.handler
+      Runtime: nodejs16.x
+      CodeUri: .
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref UsersTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+      Events:
+        LoginApi:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+
+  FileUploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/fileUpload.handler
+      Runtime: nodejs20.x
+      CodeUri: .
+      Events:
+        FileUploadApi:
+          Type: Api
+          Properties:
+            Path: /upload
+            Method: POST
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Users
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  SignupApi:
+    Description: "API Gateway endpoint URL for the Signup method"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/signup/"
+  LoginApi:
+    Description: "API Gateway endpoint URL for the Login method"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/login/"
+  FileUploadApi:
+    Description: "API Gateway endpoint URL for the File Upload method"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/upload/"

@@ -1,0 +1,17 @@
+{
+  "name": "serverless-app",
+  "version": "1.0.0",
+  "description": "Serverless application for signup, login, and file upload",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "dependencies": {
+    "aws-sdk": "^2.1678.0",
+    "bcryptjs": "^2.4.3"
+  }
+,
+  "author": "",
+  "license": "ISC"
+}
