@@ -3,14 +3,14 @@ version: 0.2
 phases:
   install:
     commands:
-      - npm install -g aws-sam-cli
-      - sam --version
+      # You don't need to install SAM CLI here
+      - echo "Installing dependencies..."
+      - npm install  # Install project dependencies
   build:
     commands:
-      - sam build
+      - echo "Building the SAM application..."
+      - sam build  # Build your SAM project
   post_build:
     commands:
+      - echo "Deploying the SAM application..."
       - sam deploy --template-file packaged.yaml --stack-name serverless-app --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset
-artifacts:
-  files:
-    - template.yaml
